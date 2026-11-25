@@ -1,0 +1,9 @@
+{% macro field(field, help='', optional=false, autocomplete='off') %}
+<div class="mb-4">
+  {{ field.label(class='form-label') }}{% if optional %} <span class="text-muted small">(optional)</span>{% endif %}
+  {{ field(class=('form-select' if field.type == 'SelectField' else 'form-control') + (' is-invalid' if field.errors else ''), autocomplete=autocomplete, rows=5 if field.type == 'TextAreaField' else none, aria_describedby=field.id ~ '-help', aria_invalid='true' if field.errors else 'false') }}
+  <div id="{{ field.id }}-help">{% if help %}<div class="form-text">{{ help }}</div>{% endif %}
+  {% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}</div>
+</div>
+{% endmacro %}
+{% macro status(value) %}<span class="badge {{ {'Pending': 'badge-warning', 'Approved': 'badge-success', 'Denied': 'badge-error'}[value] }}">{{ value }}</span>{% endmacro %}

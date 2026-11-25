@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}New override request{% endblock %}
+{% block content %}
+<a href="{{ url_for('views.dashboard') }}">Back to requests</a>
+<p class="eyebrow mt-4">COURSE REGISTRATION</p><h1>Request a course override</h1><p class="text-secondary mb-5">Tell us which course you need. Your department will review your request.</p>
+<div class="row g-5"><section class="col-lg-8"><form method="post" class="surface p-4 p-md-5">
+{{ form.hidden_tag() }}
+{% if form.errors %}<div class="alert alert-danger" role="alert">Please correct the highlighted fields before submitting.</div>{% endif %}
+<h2 class="h5 mb-4">Student information</h2><div class="row"><div class="col-md-6">{{ field(form.student_name, autocomplete='name') }}</div><div class="col-md-6">{{ field(form.student_id, 'V followed by eight digits. Example: V01234567.') }}</div></div>
+<hr class="my-4"><h2 class="h5 mb-4">Course details</h2><div class="row"><div class="col-md-7">{{ field(form.course_name, 'Example: Introduction to Computer Science') }}</div><div class="col-md-5">{{ field(form.course_number, 'Example: CMSC 301') }}</div></div>
+{{ field(form.justification, 'Share relevant prerequisites, scheduling needs, or other context. Maximum 3,000 characters.', optional=true) }}
+<p class="small text-secondary">All fields except justification are required. Submitting a request does not enroll you in the course.</p>
+<div class="d-flex flex-wrap align-items-center gap-4 mt-4">{{ form.submit(class='btn btn-primary') }}<a href="{{ url_for('views.dashboard') }}">Cancel</a></div>
+</form></section><aside class="col-lg-4"><div class="info-panel p-4"><p class="eyebrow">WHAT HAPPENS NEXT</p><h2 class="h4">A request, then a review.</h2><p class="mt-3">Your request is saved with a <strong>Pending</strong> status. An authorized staff member reviews it and records a decision.</p><hr><h3 class="h6">Stay in the loop</h3><p>Check My requests for the latest status. Email notifications are available when the portal's mail service is configured.</p><h3 class="h6 mt-4">Before you submit</h3><p class="mb-0">Check your student ID and course number, and include any context that helps your department review your request.</p></div></aside></div>
+{% endblock %}

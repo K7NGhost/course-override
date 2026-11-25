@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field %}
+{% block title %}{{ 'Create account' if register else 'Sign in' }}{% endblock %}
+{% block content %}
+<div class="row align-items-center g-5 auth-layout">
+  <section class="col-lg-6 pe-lg-5">
+    <p class="eyebrow">YOUR NEXT STEP STARTS HERE</p>
+    <h1 class="display-4 fw-bold">Keep your academic plans moving.</h1>
+    <p class="lead text-secondary mt-4">Request a course override, explain your circumstances, and follow your request in one place.</p>
+    <div class="intro-note mt-5"><strong>A clear path to your next class.</strong><p class="mb-0 mt-2">Submit your information. Your department reviews the request. Check back here for the decision.</p></div>
+  </section>
+  <section class="col-lg-5 offset-lg-1">
+    <div class="surface p-4 p-md-5">
+      <p class="eyebrow">COURSE OVERRIDE PORTAL</p>
+      <h2 class="mb-2">{{ 'Create your account' if register else 'Welcome back' }}</h2>
+      <p class="text-secondary mb-4">{{ 'Use your email to get started.' if register else 'Sign in to manage your course requests.' }}</p>
+      <form method="post">
+        {{ form.hidden_tag() }}
+        {% if register %}{{ field(form.name, autocomplete='name') }}{% endif %}
+        {{ field(form.email, autocomplete='email') }}
+        {{ field(form.password, help='Use 10–128 characters.' if register else '', autocomplete='new-password' if register else 'current-password') }}
+        {% if register %}{{ field(form.confirm, autocomplete='new-password') }}{% endif %}
+        {{ form.submit(class='btn btn-primary w-100') }}
+      </form>
+      <p class="mt-4 mb-0 text-center">{% if register %}Already registered? <a href="{{ url_for('auth.login') }}">Sign in</a>{% else %}New here? <a href="{{ url_for('auth.sign_up') }}">Create an account</a>{% endif %}</p>
+    </div>
+  </section>
+</div>
+{% endblock %}

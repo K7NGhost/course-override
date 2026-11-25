@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import status %}
+{% block title %}{{ 'Review queue' if current_user.is_staff else 'My requests' }}{% endblock %}
+{% block content %}
+<p class="eyebrow">{{ 'STAFF WORKSPACE' if current_user.is_staff else 'STUDENT WORKSPACE' }}</p>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4"><div><h1>{{ 'Course override review' if current_user.is_staff else 'My override requests' }}</h1><p class="text-secondary mb-0">Hello, {{ current_user.name }}. {{ 'Review submissions and record a decision.' if current_user.is_staff else 'Stay up to date on your next steps.' }}</p></div><a class="btn btn-primary" href="{{ url_for('views.new_request') }}">New override request</a></div>
+<div class="row g-3 mb-5">
+{% for label in ['Pending', 'Approved', 'Denied'] %}<div class="col-sm-4"><div class="surface p-4"><p class="text-secondary mb-1">{{ label }}</p><strong class="fs-2">{{ items|selectattr('status', 'equalto', label)|list|length }}</strong></div></div>{% endfor %}
+</div>
+<div class="surface p-4">
+<h2 class="h5 mb-4">{{ 'All submissions' if current_user.is_staff else 'Request history' }}</h2>
+{% if items %}
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th scope="col">Course</th>{% if current_user.is_staff %}<th scope="col">Student</th>{% endif %}<th scope="col">Submitted (UTC)</th><th scope="col">Status</th><th scope="col"><span class="visually-hidden">Details</span></th></tr></thead><tbody>
+{% for item in items %}<tr><td><strong>{{ item.course_number }}</strong><br><span class="text-secondary">{{ item.course_name }}</span></td>{% if current_user.is_staff %}<td>{{ item.student_name }}</td>{% endif %}<td>{{ item.created_at.strftime('%b %d, %Y') }}</td><td>{{ status(item.status) }}</td><td><a href="{{ url_for('views.detail', request_id=item.id) }}">View request #{{ item.id }}</a></td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<div class="text-center py-5"><h3 class="h4">{{ 'No submissions to review' if current_user.is_staff else 'Your next class starts with a request' }}</h3><p class="text-secondary">{{ 'New student requests will appear here.' if current_user.is_staff else 'You have not submitted any course override requests yet.' }}</p><a href="{{ url_for('views.new_request') }}">Start a request</a></div>{% endif %}
+</div>
+{% endblock %}

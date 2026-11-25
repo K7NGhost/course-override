@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import field, status %}
+{% block title %}Request #{{ item.id }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('views.dashboard') }}">Back to requests</a><p class="eyebrow mt-4">OVERRIDE REQUEST #{{ item.id }}</p>
+<div class="d-flex flex-wrap align-items-center gap-3 mb-2"><h1 class="mb-0">{{ item.course_number }}</h1>{{ status(item.status) }}</div><p class="lead text-secondary mb-5">{{ item.course_name }}</p>
+<div class="row g-4"><section class="col-lg-8"><div class="surface p-4 p-md-5"><h2 class="h5 mb-4">Request details</h2><dl class="row"><dt class="col-sm-4">Student name</dt><dd class="col-sm-8">{{ item.student_name }}</dd><dt class="col-sm-4">Student ID</dt><dd class="col-sm-8">{{ item.student_id }}</dd><dt class="col-sm-4">Submitted (UTC)</dt><dd class="col-sm-8">{{ item.created_at.strftime('%B %d, %Y at %H:%M') }}</dd></dl><hr class="my-4"><h3 class="h6">Justification</h3><p class="preserve-lines mb-0">{{ item.justification or 'No justification provided.' }}</p></div></section>
+<aside class="col-lg-4"><div class="info-panel p-4"><h2 class="h5">{{ 'Review request' if current_user.is_staff and item.status == 'Pending' else 'Request status' }}</h2>
+{% if current_user.is_staff and item.status == 'Pending' %}<p class="text-secondary">Record a final decision for this submission.</p><form method="post" action="{{ url_for('views.review', request_id=item.id) }}">{{ form.hidden_tag() }}{{ field(form.status) }}{{ form.submit(class='btn btn-primary') }}</form>
+{% elif item.status == 'Pending' %}<p class="mb-0 mt-3">Your request is waiting for staff review. You can return here to check for a decision.</p>
+{% else %}<p class="mt-3">Your request was {{ item.status|lower }}.</p><p class="small mb-0">Reviewed {{ item.reviewed_at.strftime('%B %d, %Y at %H:%M') }} UTC{% if item.reviewer %} by {{ item.reviewer.name }}{% endif %}.</p>{% endif %}
+</div></aside></div>
+{% endblock %}
