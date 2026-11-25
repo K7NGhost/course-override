@@ -1,10 +1,10 @@
-﻿# Course Override Portal
+﻿# Quick Summary
 
-A simple Flask assignment based on the supplied Flask-Web-App starter. Students register, sign in, submit a course override, and check its status. Staff can approve or deny requests. This is a coursework demonstration, not an official VCU service.
+Students register, sign in, submit a course override, and check its status. Staff can approve or deny requests. This is a coursework demonstration, not an official VCU service.
 
 ## First-time setup on Windows
 
-Install Python 3.13 with pip and make sure the `python` command is available in PowerShell. Check it with:
+Install Python 3.11 or newer with pip and make sure the `python` command is available in PowerShell. Python 3.13 was used for testing; it is not required. Check your version with:
 
 ```powershell
 python --version
@@ -12,7 +12,7 @@ python --version
 
 Extract the project ZIP, then open a PowerShell terminal inside the extracted `course-override` folder (the folder containing `main.py` and `requirements.txt`).
 
-The download does not include a virtual environment. Create your own environment and install the project's packages:
+Create your own environment and install the project's packages:
 
 ```powershell
 python -m venv .venv
